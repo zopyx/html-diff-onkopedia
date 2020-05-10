@@ -1,5 +1,6 @@
 import lxml.html.diff
 import lxml.html
+from lxml.cssselect import CSSSelector
 
 html1 = open('archive.html').read()
 html2 = open('index.html').read()
@@ -7,6 +8,10 @@ html2 = open('index.html').read()
 result = lxml.html.diff.htmldiff(html1, html2)
 
 root = lxml.html.fromstring(result)
+
+sel = CSSSelector('section.guideline-metadata')
+node = sel(root)[0]
+node.getparent().remove(node)
 
 for node in root.xpath('//*[self::ins or self::del]'):
     text = node.text
